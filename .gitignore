@@ -1,0 +1,24 @@
+# Ignorar o diretório node_modules
+/node_modules
+
+# Ignorar todos os arquivos .env
+.env*
+
+# Exceto o .env.example
+!.env.example
+
+# Ignorar todos os arquivos .deployment
+.deployment*
+
+# Ignorar todos os arquivos .http
+*.http
+
+# Ignorar o arquivo example.http especificamente
+example.http
+
+
+
+
+
+
+
