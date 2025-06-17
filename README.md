@@ -57,7 +57,7 @@ npm install
 
 ---
 
-## :closed_lock_with_key: Arquivos Sensíveis
+## :closed_lock_with_key: Arquivos sensíveis
 
 Este projeto utiliza uma chave RSA privada (`rsa-key-pair.pem`) para fins de deploy ou acesso remoto via AWS.
 
