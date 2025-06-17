@@ -6,10 +6,11 @@ const renderPlainTextMessage = (name, emailSender, formattedDate) => `
 Prezado(a) ${name}, agradecemos seu contato.\nEsta é uma resposta automática para confirmar o recebimento da sua mensagem em ${formattedDate}.\n
 -----------------------------------------\n\n
 Atenciosamente,\n${process.env.APP_NAME}\n
-Website: ${process.env.WEBSITE_NAME || "Em construção"}\nE-mail: ${emailSender}\nWhatsApp: (43) 99800-2238`;
+Website: ${
+    process.env.WEBSITE_NAME || "Em construção"
+}\nE-mail: ${emailSender}\nWhatsApp: (43) 99800-2238`;
 
-const renderHtmlTemplate = (name, emailSender, formattedDate, website) => {
-  return `
+const renderHtmlTemplate = (name, emailSender, formattedDate) => `
   <html style="padding: 1rem;">
     <body style="
       font-family: Arial, sans-serif;
@@ -64,7 +65,11 @@ const renderHtmlTemplate = (name, emailSender, formattedDate, website) => {
             </tr>
             <tr>
               <td style="border: 1px solid #dd4b25; text-align: left; padding: 8px">
-                ${process.env.WEBSITE_NAME ? `<a href="${process.env.WEBSITE_NAME}">${process.env.WEBSITE_NAME}<a/>` : `Em contrução`}
+                ${
+                    process.env.WEBSITE_NAME
+                        ? `<a href="${process.env.WEBSITE_NAME}">${process.env.WEBSITE_NAME}<a/>`
+                        : "Em contrução"
+                }
               </td>
               <td style="border: 1px solid #dd4b25; text-align: left; padding: 8px">
                 <a href="mailto:${emailSender}">${emailSender}</a>
@@ -80,11 +85,8 @@ const renderHtmlTemplate = (name, emailSender, formattedDate, website) => {
       </footer>
     </body>
   </html>`;
-};
 
 module.exports = {
-  renderPlainTextMessage,
-  renderHtmlTemplate
+    renderPlainTextMessage,
+    renderHtmlTemplate,
 };
-
-

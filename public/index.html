@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Enviar E-mail</title>
+
+        <!-- Bootstrap 5 CSS via CDN -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+    </head>
+
+    <body>
+        <div class="container mt-5">
+            <form class="border p-4 rounded shadow">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nome:</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        name="name"
+                        placeholder="Seu nome"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail:</label>
+                    <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="E-mail"
+                    />
+                </div>
+
+                <!-- <div class="mb-3">
+                    <label for="cpf" class="form-label">Cpf</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cpf"
+                        name="cpf"
+                        data-mask="cpf"
+                        placeholder="000.000.000-00"
+                    />
+                </div> -->
+
+                <!-- <div class="mb-3">
+                    <label for="cnpj" class="form-label">Cnpj</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cnpj"
+                        name="cnpj"
+                        data-mask="cnpj"
+                        placeholder="00.000.000/0000-00"
+                    />
+                </div> -->
+
+                <!-- <div class="mb-3">
+                    <label for="cep" class="form-label">Cep</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cep"
+                        name="cep"
+                        data-mask="cep"
+                        placeholder="00000-000"
+                    />
+                </div> -->
+
+                <!-- <div class="mb-3">
+                    <label for="landlineNumber" class="form-label">Telefone fixo</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="landlineNumber"
+                        name="landlineNumber"
+                        data-mask="landline"
+                        placeholder="(00) 0000-0000"
+                    />
+                </div> -->
+
+                <!-- <div class="mb-3">
+                    <label for="phone" class="form-label">Telefone</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="phone"
+                        name="phone"
+                        data-mask="phone"
+                        placeholder="(00) 00000-0000 ou (00) 0000-0000"
+                    />
+                </div> -->
+
+                <!-- <div class="mb-3">
+                    <label for="subject" class="form-label">Assunto:</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="subject"
+                        name="subject"
+                        placeholder="Assunto da mensagem"
+                    />
+                </div> -->
+
+                <div class="mb-4">
+                    <label for="message" class="form-label">Mensagem:</label>
+                    <textarea
+                        class="form-control"
+                        id="message"
+                        name="message"
+                        rows="4"
+                        placeholder="Sua mensagem"
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Enviar</button>
+            </form>
+        </div>
+
+        <script>
+            (function (doc) {
+                const masks = {
+                    cpf(digitsOnly) {
+                        // 000.000.000-00
+                        return String(digitsOnly)
+                            .replace(/\D/g, "")
+                            .replace(/(\d{3})(\d)/, "$1.$2")
+                            .replace(/(\d{3})(\d)/, "$1.$2")
+                            .replace(/(\d{3})(\d)/, "$1-$2")
+                            .replace(/(-\d{2})(\d)$/, "$1");
+                    },
+                    cnpj(digitsOnly) {
+                        // 00.000.000/0000-00
+                        return String(digitsOnly)
+                            .replace(/\D/g, "")
+                            .replace(/(\d\d)(\d)/, "$1.$2")
+                            .replace(/(\d\d\d)(\d)/, "$1.$2")
+                            .replace(/(\d\d\d)(\d)/, "$1/$2")
+                            .replace(/(\d\d\d\d)(\d)/, "$1-$2")
+                            .replace(/(-\d\d)(\d)$/, "$1");
+                    },
+                    cep(digitsOnly) {
+                        // 00000-000
+                        return String(digitsOnly)
+                            .replace(/(\d{5})(\d)/, "$1-$2")
+                            .replace(/(-\d{3})(\d)$/, "$1");
+                    },
+                    landline(digitsOnly) {
+                        // (00) 0000-0000
+                        return String(digitsOnly)
+                            .replace(/\D/g, "")
+                            .replace(/(\d{2})(\d)/, "($1) $2")
+                            .replace(/(\d{4})(\d)/, "$1-$2")
+                            .replace(/(-\d{4})(\d)$/, "$1");
+                    },
+                    phone(digitsOnly) {
+                        // (00) 00000-0000 | (00) 0000-0000
+                        return String(digitsOnly)
+                            .replace(/\D/g, "")
+                            .replace(/(\d{2})(\d)/, "($1) $2")
+                            .replace(/(\d{4})(\d)/, "$1-$2")
+                            .replace(/(\d{4})-(\d)(\d{4})/, "$1$2-$3")
+                            .replace(/(-\d{4})(\d)+?$/, "$1");
+                    },
+                };
+                const selectedMasks = doc.querySelectorAll("[data-mask]");
+
+                selectedMasks.forEach(function ($input) {
+                    let maskType = $input.dataset.mask;
+
+                    $input.addEventListener("input", function (event) {
+                        event.target.value = masks[maskType](event.target.value);
+                    });
+                });
+            })(document);
+
+            document.querySelector("form").addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const apiUrl = `http://localhost:8001/api/send-email`;
+
+                // createRequestBody(this, "multipart/form-data", apiUrl);
+                createRequestBody(this, "application/json", apiUrl);
+
+                function createRequestBody(formElement, contentType, apiUrl) {
+                    switch (contentType) {
+                        case "multipart/form-data":
+                            const formData = new FormData(formElement);
+
+                            for (let [key, value] of Array.from(formData.entries())) {
+                                if ((key && !value) || value.trim() === "") {
+                                    formData.delete(key);
+                                    continue;
+                                }
+
+                                if (key === "phone" && value)
+                                    formData.set(key, value.replace(/\D/g, ""));
+                            }
+
+                            sendRequest(undefined, formData, apiUrl);
+                            break;
+                        case "application/json":
+                            const data = {
+                                name: formElement.name.value,
+                                email: formElement.email.value,
+                                ...(formElement.phone?.value && {
+                                    phone: formElement.phone.value,
+                                }),
+                                ...(formElement.subject?.value && {
+                                    subject: formElement.subject.value,
+                                }),
+                                message: formElement.message.value,
+                            };
+                            sendRequest(
+                                {
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                },
+                                data,
+                                apiUrl
+                            );
+                            break;
+                    }
+                }
+
+                function sendRequest(...args) {
+                    const [requestInitHeaders, data, apiUrl] = args;
+                    const contentType = requestInitHeaders?.headers["Content-Type"] || "";
+                    const requestBody = contentType.startsWith("application/json")
+                        ? JSON.stringify(data)
+                        : data;
+
+                    let index = 0,
+                        dataEntries = !(requestBody instanceof FormData)
+                            ? Object.entries(data)
+                            : data instanceof FormData
+                              ? Array.from(data.entries())
+                              : [];
+
+                    fetch(apiUrl, {
+                        method: "POST",
+                        ...requestInitHeaders,
+                        body: requestBody,
+                        mode: "cors",
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.text().then(text => {
+                                    throw text;
+                                });
+                            }
+
+                            return response.json();
+                        })
+                        .then(response => {
+                            logPayload(index, dataEntries);
+                            console.log(response);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+
+                function logPayload(index, dataEntries) {
+                    for (let [key, value] of dataEntries) {
+                        if (index === 0) console.log("Logging payload data...\n");
+                        console.log(`\t${key}: ${value}`);
+                        if (index === dataEntries.length - 1) console.log("Finish...\n");
+                        index++;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

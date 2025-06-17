@@ -16,6 +16,8 @@
 # Ignorar o arquivo example.http especificamente
 example.http
 
+# Arquivos sensíveis de segurança (chaves, certificados, etc.)
+*.pem
 
 
 

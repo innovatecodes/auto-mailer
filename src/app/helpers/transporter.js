@@ -5,14 +5,14 @@ initializeEnv();
 
 (function (port) {
     return !process.env.NODEMAILER_PORT
-        ? process.env.NODEMAILER_PORT = port.toString()
+        ? (process.env.NODEMAILER_PORT = port.toString())
         : process.env.NODEMAILER_PORT;
-})(578);
+})(587);
 
 const transporter = nodemailer.createTransport({
     host: process.env.NODEMAILER_HOST,
-    port: Number(process.env.NODEMAILER_PORT),
-    secure: Number(process.env.NODEMAILER_PORT) === 465 ? true : false,
+    port: parseInt(process.env.NODEMAILER_PORT),
+    secure: parseInt(process.env.NODEMAILER_PORT) === 465,
     maxConnections: 5,
     maxMessages: 100,
     auth: {
@@ -25,6 +25,5 @@ const transporter = nodemailer.createTransport({
 module.exports = {
     initializeEnv,
     transporterFactory: transporter,
-    mailLib: nodemailer
+    mailLib: nodemailer,
 };
-

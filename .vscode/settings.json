@@ -1,0 +1,9 @@
+// {
+//     "prettier.trailingComma": "es5", // Adiciona vírgula no final de objetos/arrays conforme o padrão ES5 (em objetos, arrays, etc., mas não em funções)
+//     "prettier.tabWidth": 4, // Define o número de espaços por tabulação (indentação) como 4
+//     "prettier.semi": true, // Adiciona ponto e vírgula no final das linhas
+//     "prettier.singleQuote": false, // Usa aspas duplas ("") em vez de aspas simples ('') para strings
+//     "prettier.printWidth": 100, // Quebra as linhas quando ultrapassam 100 caracteres
+//     "prettier.arrowParens": "avoid", // Remove parênteses em arrow functions quando possível: `x => x` em vez de `(x) => x`
+//     "prettier.bracketSameLine": false // Coloca o `>` de fechamento de JSX em uma nova linha (em vez de na mesma linha do último atributo)
+// }
