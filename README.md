@@ -54,6 +54,7 @@ npm install
 - **Multer**
 - **Cross-env**
 - **ESLint**
+- **eslint-config-prettier** — desativa regras do ESLint que conflitam com o Prettier
 
 ---
 
