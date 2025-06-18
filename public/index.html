@@ -175,7 +175,6 @@
                     let maskType = $input.dataset.mask;
                     $input.addEventListener("input", function (event) {
                         event.target.value = masks[maskType](event.target.value);
-                        console.log(masks[maskType](event.target.value));
                     });
                 });
             })(document);

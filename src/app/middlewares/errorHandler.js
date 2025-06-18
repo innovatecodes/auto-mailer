@@ -15,25 +15,17 @@ module.exports = async function (app) {
              * Deve ser usada apenas em desenvolvimento, pois pode expor
              * informações sensíveis em produção (ex: detalhes de falhas SMTP).
              */
-            if (process.env.NODE_ENV === "development") customErrorMessage += `|${error.message}`;
+            if (process.env.NODE_ENV === "development" && customErrorMessage)
+                customErrorMessage += `|${error.message}`;
             new InternalServerError(
-                customErrorMessage ||
-                    "Erro no envio de e-mail. Por favor, tente novamente mais tarde!"
+                customErrorMessage || "Erro interno do servidor!"
             ).sendErrorResponse(response);
         } else if (error instanceof ValidationError || error instanceof InternalServerError)
             return error.sendErrorResponse(response);
         else {
             // Fallback: trata qualquer outro erro não esperado
-            var parsed;
-
-            try {
-                parsed = JSON.parse(error.message);
-                // eslint-disable-next-line no-unused-vars
-            } catch (_) {
-                parsed = error.message;
-            }
-
-            response.status(500).send({ message: parsed });
+            new InternalServerError(error?.message).sendErrorResponse(response);
+            // response.status(500).send({ message: error?.message || "Erro interno do servidor!" });
         }
     });
 };

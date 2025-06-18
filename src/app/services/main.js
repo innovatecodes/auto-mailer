@@ -2,7 +2,6 @@ const { initializeEnv } = require("../helpers/transporter.js");
 const sendEmail = require("../helpers/sendEmail.js");
 const sendAutoReply = require("../helpers/sendAutoReply.js");
 const ValidationError = require("../errors/validationError.js");
-// const { request } = require("../../app.js");
 
 initializeEnv();
 
@@ -66,7 +65,6 @@ module.exports = async function (request) {
             return {
                 success: true,
                 message: "E-mail enviado!",
-                // data: { ...request.body },
                 ...(process.env.NODE_ENV === "development"
                     ? { envelope: data?.envelope }
                     : undefined),

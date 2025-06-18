@@ -16,7 +16,7 @@ module.exports = class BaseError extends Error {
         this._errorResponseInfo = {};
         let errors = "";
 
-        if (this.message.includes("|")) {
+        if (this.message && this.message.includes("|")) {
             try {
                 errors = JSON.parse(this.message.split("|")[1]);
                 // eslint-disable-next-line no-unused-vars
@@ -32,10 +32,11 @@ module.exports = class BaseError extends Error {
             });
         }
     }
-
     sendErrorResponse(res) {
         res.status(this._statusCode).json({
-            message: this.message.includes("|") ? this.message.split("|").at(0) : this.message,
+            message: this.message.includes("|")
+                ? this.message.split("|").at(0)
+                : this.message || "Erro interno do servidor!",
             ...this._errorResponseInfo,
         });
     }
