@@ -38,6 +38,42 @@
                 </div>
 
                 <!-- <div class="mb-3">
+                    <label for="phone" class="form-label">Telefone</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="phone"
+                        name="phone"
+                        data-mask="phone"
+                        placeholder="(00) 00000-0000 ou (00) 0000-0000"
+                    />
+                </div> -->
+
+                <!-- <div class="mb-3">
+                    <label for="landline" class="form-label">Telefone fixo</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="landline"
+                        name="landline"
+                        data-mask="landline"
+                        placeholder="(00) 0000-0000"
+                    />
+                </div> -->
+
+                <!-- <div class="mb-3">
+                    <label for="cep" class="form-label">Cep</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="cep"
+                        name="cep"
+                        data-mask="cep"
+                        placeholder="00000-000"
+                    />
+                </div> -->
+
+                <!-- <div class="mb-3">
                     <label for="cpf" class="form-label">Cpf</label>
                     <input
                         type="text"
@@ -58,42 +94,6 @@
                         name="cnpj"
                         data-mask="cnpj"
                         placeholder="00.000.000/0000-00"
-                    />
-                </div> -->
-
-                <!-- <div class="mb-3">
-                    <label for="cep" class="form-label">Cep</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="cep"
-                        name="cep"
-                        data-mask="cep"
-                        placeholder="00000-000"
-                    />
-                </div> -->
-
-                <!-- <div class="mb-3">
-                    <label for="landlineNumber" class="form-label">Telefone fixo</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="landlineNumber"
-                        name="landlineNumber"
-                        data-mask="landline"
-                        placeholder="(00) 0000-0000"
-                    />
-                </div> -->
-
-                <!-- <div class="mb-3">
-                    <label for="phone" class="form-label">Telefone</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="phone"
-                        name="phone"
-                        data-mask="phone"
-                        placeholder="(00) 00000-0000 ou (00) 0000-0000"
                     />
                 </div> -->
 
@@ -126,6 +126,29 @@
         <script>
             (function (doc) {
                 const masks = {
+                    phone(digitsOnly) {
+                        // (00) 00000-0000 | (00) 0000-0000
+                        return String(digitsOnly)
+                            .replace(/\D/g, "")
+                            .replace(/(\d{2})(\d)/, "($1) $2")
+                            .replace(/(\d{4})(\d)/, "$1-$2")
+                            .replace(/(\d{4})-(\d)(\d{4})/, "$1$2-$3")
+                            .replace(/(-\d{4})(\d)+?$/, "$1");
+                    },
+                    landline(digitsOnly) {
+                        // (00) 0000-0000
+                        return String(digitsOnly)
+                            .replace(/\D/g, "")
+                            .replace(/(\d{2})(\d)/, "($1) $2")
+                            .replace(/(\d{4})(\d)/, "$1-$2")
+                            .replace(/(-\d{4})(\d)$/, "$1");
+                    },
+                    cep(digitsOnly) {
+                        // 00000-000
+                        return String(digitsOnly)
+                            .replace(/(\d{5})(\d)/, "$1-$2")
+                            .replace(/(-\d{3})(\d)$/, "$1");
+                    },
                     cpf(digitsOnly) {
                         // 000.000.000-00
                         return String(digitsOnly)
@@ -145,37 +168,14 @@
                             .replace(/(\d\d\d\d)(\d)/, "$1-$2")
                             .replace(/(-\d\d)(\d)$/, "$1");
                     },
-                    cep(digitsOnly) {
-                        // 00000-000
-                        return String(digitsOnly)
-                            .replace(/(\d{5})(\d)/, "$1-$2")
-                            .replace(/(-\d{3})(\d)$/, "$1");
-                    },
-                    landline(digitsOnly) {
-                        // (00) 0000-0000
-                        return String(digitsOnly)
-                            .replace(/\D/g, "")
-                            .replace(/(\d{2})(\d)/, "($1) $2")
-                            .replace(/(\d{4})(\d)/, "$1-$2")
-                            .replace(/(-\d{4})(\d)$/, "$1");
-                    },
-                    phone(digitsOnly) {
-                        // (00) 00000-0000 | (00) 0000-0000
-                        return String(digitsOnly)
-                            .replace(/\D/g, "")
-                            .replace(/(\d{2})(\d)/, "($1) $2")
-                            .replace(/(\d{4})(\d)/, "$1-$2")
-                            .replace(/(\d{4})-(\d)(\d{4})/, "$1$2-$3")
-                            .replace(/(-\d{4})(\d)+?$/, "$1");
-                    },
                 };
                 const selectedMasks = doc.querySelectorAll("[data-mask]");
 
                 selectedMasks.forEach(function ($input) {
                     let maskType = $input.dataset.mask;
-
                     $input.addEventListener("input", function (event) {
                         event.target.value = masks[maskType](event.target.value);
+                        console.log(masks[maskType](event.target.value));
                     });
                 });
             })(document);
@@ -199,8 +199,15 @@
                                     continue;
                                 }
 
-                                if (key === "phone" && value)
-                                    formData.set(key, value.replace(/\D/g, ""));
+                                switch (key) {
+                                    case "phone":
+                                    case "landline":
+                                    case "cep":
+                                    case "cpf":
+                                    case "cnpj":
+                                        formData.set(key, sanitizeInput(value));
+                                        break;
+                                }
                             }
 
                             sendRequest(undefined, formData, apiUrl);
@@ -210,7 +217,19 @@
                                 name: formElement.name.value,
                                 email: formElement.email.value,
                                 ...(formElement.phone?.value && {
-                                    phone: formElement.phone.value,
+                                    phone: sanitizeInput(formElement.phone.value),
+                                }),
+                                ...(formElement.landline?.value && {
+                                    landline: sanitizeInput(formElement.landline.value),
+                                }),
+                                ...(formElement.cep?.value && {
+                                    cep: sanitizeInput(formElement.cep.value),
+                                }),
+                                ...(formElement.cpf?.value && {
+                                    cpf: sanitizeInput(formElement.cpf.value),
+                                }),
+                                ...(formElement.cnpj?.value && {
+                                    cnpj: sanitizeInput(formElement.cnpj.value),
                                 }),
                                 ...(formElement.subject?.value && {
                                     subject: formElement.subject.value,
@@ -275,6 +294,10 @@
                         if (index === dataEntries.length - 1) console.log("Finish...\n");
                         index++;
                     }
+                }
+
+                function sanitizeInput(value) {
+                    return String(value).replace(/\D/g, "");
                 }
             });
         </script>

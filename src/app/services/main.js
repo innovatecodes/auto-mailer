@@ -2,24 +2,32 @@ const { initializeEnv } = require("../helpers/transporter.js");
 const sendEmail = require("../helpers/sendEmail.js");
 const sendAutoReply = require("../helpers/sendAutoReply.js");
 const ValidationError = require("../errors/validationError.js");
+// const { request } = require("../../app.js");
 
 initializeEnv();
 
-module.exports = async function (req) {
-    const { name, email, phone, subject, message } = req?.body;
+module.exports = async function (request) {
+    const { name, email, phone, landline, cep, cpf, cnpj, subject, message } = request?.body;
     const emailPattern = new RegExp(
         "^[a-zA-Z][a-zA-Z0-9._-]*[a-zA-Z0-9_]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}$"
     );
     let errors = {};
 
-    if (!name || name.trim() === "") errors.name = "O campo nome é obrigatório!";
-    else if (name.length < 4) errors.name = "O nome deve conter no mínimo 4 caracteres!";
-    if (!email || email.trim() === "") errors.email = "O campo e-mail é obrigatório!";
-    else if (!emailPattern.test(email)) errors.email = "O e-mail informado não é válido!";
-    else if (phone && !(phone.length === 10 || phone.length === 11))
-        errors.phone = "O campo telefone deve conter entre 10 e 11 dígitos incluindo o DDD!";
-    if (!message || message.trim() === "") errors.message = "O campo mensagem é obrigatório!";
-    else if (message.length < 6) errors.message = "A mensagem deve ter no mínimo 6 caracteres!";
+    if (!name || name.trim() === "") errors.name = "Nome é obrigatório!";
+    else if (name.length < 4) errors.name = "Nome deve ter no mínimo 4 caracteres!";
+    if (!email || email.trim() === "") errors.email = "E-mail é obrigatório!";
+    else if (!emailPattern.test(email)) errors.email = "E-mail inválido!";
+    //#region Validações preparadas para inputs opcionais (ainda não exibidos no HTML)
+    if (phone && !(phone.length === 10 || phone.length === 11))
+        errors.phone = "Telefone deve ter entre 10 e 11 dígitos, incluindo o DDD!";
+    if (landline && landline.length !== 10)
+        errors.landline = "Telefone fixo deve ter 10 dígitos, incluindo o DDD!";
+    if (cep && cep.length !== 8) errors.cep = "CEP deve ter 8 dígitos!";
+    if (cpf && cpf.length !== 11) errors.cpf = "CPF deve ter 11 dígitos!";
+    if (cnpj && cnpj.length !== 14) errors.cnpj = "CNPJ deve ter 14 dígitos!";
+    //#endregion
+    if (!message || message.trim() === "") errors.message = "Mensagem não pode estar vazia!";
+    else if (message.length < 6) errors.message = "Mensagem deve ter no mínimo 6 caracteres!";
 
     /**
      * Notas sobre try-catch
@@ -37,6 +45,10 @@ module.exports = async function (req) {
                 name,
                 email,
                 ...(phone ? { phone: phone } : undefined),
+                ...(landline ? { landline: landline } : undefined),
+                ...(cep ? { cep: cep } : undefined),
+                ...(cpf ? { cpf: cpf } : undefined),
+                ...(cnpj ? { cnpj: cnpj } : undefined),
                 ...(subject ? { subject: subject } : undefined),
                 message,
             })
@@ -54,6 +66,7 @@ module.exports = async function (req) {
             return {
                 success: true,
                 message: "E-mail enviado!",
+                // data: { ...request.body },
                 ...(process.env.NODE_ENV === "development"
                     ? { envelope: data?.envelope }
                     : undefined),
