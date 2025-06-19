@@ -32,6 +32,6 @@ routes.post("/api/send-email", multer().none(), autoMailerController.handleReque
  * corresponderam a nenhuma rota definida anteriormente.
  * Quando executado, responde com a página 404 via renderNotFoundPage.
  */
-routes.use((request, response) => autoMailerController.renderNotFoundPage(request, response));
+// routes.use((request, response) => autoMailerController.renderNotFoundPage(request, response));
 
 module.exports = routes;
