@@ -9,9 +9,10 @@ if (process.env.NODE_ENV === "development") routes.get("/", autoMailerController
 
 // (IIFE) verifica se o app está rodando dentro de uma instância EC2 da AWS
 (async () => {
-    if (process.env.NODE_ENV === "production" && (await isEc2InstanceAsync()))
+    if (process.env.NODE_ENV === "production" && (await isEc2InstanceAsync())) {
         // Rota usada pelo Load Balancer da AWS para verificar se a aplicação está online
-        routes.get("/health", autoMailerController.healthyChecks);
+        routes.get("/", autoMailerController.healthyChecks);
+    }
 })();
 
 // multer().none() configura o Multer para analisar requisições 'multipart/form-data' contendo apenas campos de texto, ignorando qualquer arquivo enviado.
