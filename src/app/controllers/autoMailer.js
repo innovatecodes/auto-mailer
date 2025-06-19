@@ -12,7 +12,7 @@ module.exports = class AutoMailerController {
             .sendFile(path.resolve(__dirname, "..", "..", "..", "public", "index.html"));
     };
 
-    // Rota usada pelo Load Balancer da AWS para health check da instância EC2. (opcional)
+    // Health checks
     static healthyChecks = async (request, response) => {
         response.status(200).end();
     };
