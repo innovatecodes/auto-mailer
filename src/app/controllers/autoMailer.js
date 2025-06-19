@@ -13,8 +13,8 @@ module.exports = class AutoMailerController {
     };
 
     // Rota usada pelo Load Balancer da AWS para health check da instância EC2. (opcional)
-    static checkHealth = async (request, response) => {
-        response.sendStatus(200);
+    static healthyChecks = async (request, response) => {
+        response.status(200).end();
     };
 
     // Página 404

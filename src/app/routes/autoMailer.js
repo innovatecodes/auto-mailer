@@ -3,16 +3,15 @@ const routes = require("express").Router();
 const autoMailerController = require("../controllers/autoMailer.js");
 // Importa o multer, middleware para lidar com multipart/form-data (envio de formulários com arquivos ou não)
 const multer = require("multer");
-const isAwsEc2Instance = require("../helpers/isAwsEc2Instance.js");
+const isEc2InstanceAsync = require("../helpers/isAwsEc2Instance.js");
 
 if (process.env.NODE_ENV === "development") routes.get("/", autoMailerController.renderHomePage);
 
 // (IIFE) verifica se o app está rodando dentro de uma instância EC2 da AWS
-(async function () {
-    const isAws = await isAwsEc2Instance();
-    if (process.env.NODE_ENV === "production" && isAws)
+(async () => {
+    if (process.env.NODE_ENV === "production" && (await isEc2InstanceAsync()))
         // Rota usada pelo Load Balancer da AWS para verificar se a aplicação está online
-        routes.get("/health", autoMailerController.checkHealth);
+        routes.get("/health", autoMailerController.healthyChecks);
 })();
 
 // multer().none() configura o Multer para analisar requisições 'multipart/form-data' contendo apenas campos de texto, ignorando qualquer arquivo enviado.
