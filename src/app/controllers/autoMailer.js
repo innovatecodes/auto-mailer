@@ -14,7 +14,7 @@ module.exports = class AutoMailerController {
 
     // Health checks
     static healthyChecks = async (request, response) => {
-        response.status(200).end();
+        response.sendStatus(200);
     };
 
     // Página 404
