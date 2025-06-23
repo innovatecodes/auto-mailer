@@ -11,7 +11,7 @@ Prezado(a) ${name}, agradecemos seu contato.\nEsta é uma resposta automática p
 Atenciosamente,\n${process.env.APP_NAME}\n
 Website: ${
     process.env.WEBSITE_URL.replace(/^https?:\/\//, "").replace(/\/$/, "") || "Em construção"
-}\nE-mail: ${emailSender}\nWhatsApp: (43) 99800-2238`;
+}\nE-mail: ${emailSender}\nWhatsApp: (${ddd}) ${whatsapp.slice(2, 7)}-${whatsapp.slice(7)}`;
 
 const renderHtmlTemplate = (name, emailSender, formattedDate) => `
   <html style="padding: 1rem;">
