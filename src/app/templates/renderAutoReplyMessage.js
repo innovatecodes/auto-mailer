@@ -56,7 +56,7 @@ const renderHtmlTemplate = (name, emailSender, formattedDate) => `
 
         <br />
 
-        <div style="overflow-x: auto">
+        <div style="overflow-x: auto; max-width: 100%;">
           <table style="
             font-family: Arial, sans-serif;
             border-collapse: collapse;
