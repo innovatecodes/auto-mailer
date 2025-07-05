@@ -15,6 +15,11 @@ Website: ${
 
 const renderHtmlTemplate = (name, emailSender, formattedDate) => `
   <html style="padding: 1rem;">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${process.env.APP_NAME}</title>
+    </head>
     <body style="
       font-family: Arial, sans-serif;
       background-color: #fdfdfd;
