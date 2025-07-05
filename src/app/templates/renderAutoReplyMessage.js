@@ -56,11 +56,12 @@ const renderHtmlTemplate = (name, emailSender, formattedDate) => `
 
         <br />
 
-        <div style="overflow-x: auto; max-width: 100%;">
+        <div style="overflow-x: scroll; max-width: 100%;">
           <table style="
             font-family: Arial, sans-serif;
             border-collapse: collapse;
-            width: max-content;">
+            width: 100%;
+            min-width: 360px;">
             <tr style="background-color: #dd4b25; color: #fafafa">
               <th style="border: 1px solid #dd4b25; text-align: left; padding: 8px">Website</th>
               <th style="border: 1px solid #dd4b25; text-align: left; padding: 8px">E-mail</th>
