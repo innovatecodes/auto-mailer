@@ -58,16 +58,6 @@ npm install
 
 ---
 
-## :closed_lock_with_key: Arquivos sensíveis
-
-Este projeto utiliza uma chave RSA privada (`rsa-key-pair.pem`) para fins de deploy ou acesso remoto via AWS.
-
-> :warning: **Importante:**  
-> O arquivo `rsa-key-pair.pem` está listado no `.gitignore` e **não deve ser versionado**.  
-> Ele é necessário apenas para ambientes locais ou de deploy em nuvem (ex: SSH na AWS EC2) e **deve ser fornecido manualmente**.
-
----
-
 ## :computer: Setup do servidor AWS EC2 (opcional)
 
 Este guia contém os comandos e etapas para configurar um servidor Ubuntu hospedado na AWS (EC2) com acesso via SSH, atualização do sistema e instalação do Node.js.
@@ -77,6 +67,14 @@ Este guia contém os comandos e etapas para configurar um servidor Ubuntu hosped
 - Instância EC2 (Ubuntu) já criada
 - Chave `.pem` da AWS
 - Terminal com suporte a SSH
+
+### :closed_lock_with_key: Arquivos sensíveis
+
+Este projeto utiliza uma chave RSA privada (`rsa-key-pair.pem`) para fins de deploy ou acesso remoto via AWS.
+
+> :warning: **Importante:**  
+> O arquivo `rsa-key-pair.pem` está listado no `.gitignore` e **não deve ser versionado**.  
+> Ele é necessário apenas para ambientes locais ou de deploy em nuvem (ex: SSH na AWS EC2) e **deve ser fornecido manualmente**.
 
 ### :jigsaw: Etapas de configuração
 

@@ -2,13 +2,16 @@ const { initializeEnv } = require("../helpers/transporter.js");
 
 initializeEnv();
 
+const whatsapp = process.env.WHATSAPP ?? "";
+const ddd = whatsapp.slice(0, 2);
+
 const renderPlainTextMessage = (name, emailSender, formattedDate) => `
 Prezado(a) ${name}, agradecemos seu contato.\nEsta é uma resposta automática para confirmar o recebimento da sua mensagem em ${formattedDate}.\n
 -----------------------------------------\n\n
 Atenciosamente,\n${process.env.APP_NAME}\n
 Website: ${
-    process.env.WEBSITE_NAME || "Em construção"
-}\nE-mail: ${emailSender}\nWhatsApp: (43) 99800-2238`;
+    process.env.WEBSITE_URL.replace(/^https?:\/\//, "").replace(/\/$/, "") || "Em construção"
+}\nE-mail: ${emailSender}\nWhatsApp: (${ddd}) ${whatsapp.slice(2, 7)}-${whatsapp.slice(7)}`;
 
 const renderHtmlTemplate = (name, emailSender, formattedDate) => `
   <html style="padding: 1rem;">
@@ -53,7 +56,7 @@ const renderHtmlTemplate = (name, emailSender, formattedDate) => `
 
         <br />
 
-        <div style="overflow-x: auto">
+        <div style="overflow-x: auto; max-width: 100%;">
           <table style="
             font-family: Arial, sans-serif;
             border-collapse: collapse;
@@ -66,18 +69,26 @@ const renderHtmlTemplate = (name, emailSender, formattedDate) => `
             <tr>
               <td style="border: 1px solid #dd4b25; text-align: left; padding: 8px">
                 ${
-                    process.env.WEBSITE_NAME
-                        ? `<a href="${process.env.WEBSITE_NAME}">${process.env.WEBSITE_NAME}<a/>`
-                        : "Em contrução"
+                    process.env.WEBSITE_URL
+                        ? `
+                      <a href="${process.env.WEBSITE_URL}">
+                        ${process.env.WEBSITE_URL.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                      </a>`
+                        : "Em construção"
                 }
               </td>
               <td style="border: 1px solid #dd4b25; text-align: left; padding: 8px">
                 <a href="mailto:${emailSender}">${emailSender}</a>
               </td>
               <td style="border: 1px solid #dd4b25; text-align: left; padding: 8px">
-                <a href="https://api.whatsapp.com/send/?phone=5543998002238" target="_blank">
-                  (43) 99800-2238
-                </a>
+                ${
+                    whatsapp && whatsapp.length === 11
+                        ? `
+                      <a href="https://api.whatsapp.com/send/?phone=55${whatsapp}" target="_blank">
+                        (${ddd}) ${whatsapp.slice(2, 7)}-${whatsapp.slice(7)}
+                      </a>`
+                        : "Não informado"
+                }
               </td>
             </tr>
           </table>

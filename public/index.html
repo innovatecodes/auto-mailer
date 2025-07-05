@@ -184,8 +184,8 @@
 
                 const apiUrl = `http://localhost:8001/api/send-email`;
 
-                // createRequestBody(this, "multipart/form-data", apiUrl);
-                createRequestBody(this, "application/json", apiUrl);
+                createRequestBody(this, "multipart/form-data", apiUrl);
+                // createRequestBody(this, "application/json", apiUrl);
 
                 function createRequestBody(formElement, contentType, apiUrl) {
                     switch (contentType) {
